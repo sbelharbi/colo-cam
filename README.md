@@ -1,7 +1,7 @@
 ### Pytorch code for:
 `CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos`
 
-ArXiv: [https://arxiv.org/abs/xxxx.xxxxx](https://arxiv.org/abs/xxxx.xxxxx)
+ArXiv: [https://arxiv.org/abs/2303.09044](https://arxiv.org/abs/2303.09044)
 
 ### Citation:
 ```
@@ -10,7 +10,7 @@ ArXiv: [https://arxiv.org/abs/xxxx.xxxxx](https://arxiv.org/abs/xxxx.xxxxx)
   author={Belharbi, S. and Murtaza, S. and Pedersoli, M. and Ben Ayed, I. and 
   McCaffrey, L. and Granger, E.},
   journal={CoRR},
-  volume={abs/xxxx.xxxxx},
+  volume={abs/2303.09044},
 }
 ```
 
