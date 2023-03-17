@@ -20,7 +20,7 @@ Please create a github issue.
 ### Content:
 * [Method](#method)
 * [Results](#results)
-* [Requirements](#re2q)
+* [Requirements](#reqs)
 * [Datasets](#datasets)
 * [Run code](#run)
 
@@ -29,9 +29,9 @@ Please create a github issue.
 <img src="doc/method.png" alt="method" width="600">
 
 #### <a name='results'> Results</a>:
-More demo: [here](https://drive.google.com/drive/folders/14KysyAoFfF-3_ruSwzObBz3AS0G6xG93?usp=share_link)
-
-
+More demo: 
+- [Google drive](https://drive.google.com/drive/folders/14KysyAoFfF-3_ruSwzObBz3AS0G6xG93?usp=share_link)
+- [Github](./more-demo.md)
 
 
 
