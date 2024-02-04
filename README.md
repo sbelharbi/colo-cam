@@ -6,7 +6,7 @@ by **Soufiane Belharbi<sup>1</sup>, Shakeeb Murtaza<sup>1</sup>, Marco Pedersoli
 <br/>
 <sup>2</sup> Goodman Cancer Research Centre, Dept. of Oncology, McGill University, Montreal, Canada
 
-<p align="center"><img src="doc/promo.png" alt="outline" width="70%"></p>
+<p align="center"><img src="doc/promo.png" alt="outline" width="90%"></p>
 
 
 ## Abstract
