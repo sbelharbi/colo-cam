@@ -1,13 +1,28 @@
-### Pytorch code for:
-`CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos`
+# [CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos](https://arxiv.org/pdf/2303.09044.pdf)
 
-ArXiv: [https://arxiv.org/abs/2303.09044](https://arxiv.org/abs/2303.09044)
+by **Soufiane Belharbi<sup>1</sup>, Shakeeb Murtaza<sup>1</sup>, Marco Pedersoli<sup>1</sup>, Ismail Ben Ayed<sup>1</sup>, Luke McCaffrey<sup>2</sup>, Eric Granger<sup>1</sup>**
 
-### Citation:
+<sup>1</sup> LIVIA, Dept. of Systems Engineering, ÉTS, Montreal, Canada
+<br/>
+<sup>2</sup> Goodman Cancer Research Centre, Dept. of Oncology, McGill University, Montreal, Canada
+
+<p align="center"><img src="doc/promo.png" alt="outline" width="70%"></p>
+
+
+## Abstract
+Weakly-supervised video object localization (WSVOL) methods often rely on visual and motion cues only, making them susceptible to inaccurate localization.
+Recently, discriminative models via a temporal class activation mapping (CAM) method have been explored.  Although results are promising, objects are assumed to have minimal movement leading to degradation in performance for relatively long-term dependencies.
+In this paper, a novel CoLo-CAM method for object localization is proposed to leverage spatiotemporal information in activation maps without any assumptions about object movement. Over a given sequence of frames, explicit joint learning of localization is produced across these maps based on color cues, by assuming an object has similar color across frames. The CAMs' activations are constrained to activate similarly over pixels with similar colors, achieving co-localization. This joint learning creates direct communication among pixels across all image locations, and over all frames, allowing for transfer, aggregation, and correction of learned localization. This is achieved by minimizing a color term of a CRF loss over joint images/maps. In addition to our multi-frame constraint, we impose per-frame local constraints including pseudo-labels, and CRF loss in combination with a global size constraint to improve per-frame localization.
+Empirical experiments on two challenging datasets for unconstrained videos, YouTube-Objects, show the merits of our method, and its robustness to long-term dependencies, leading to new state-of-the-art localization performance.
+
+
+**Code: Pytorch 1.12.1**
+
+## Citation:
 ```
 @article{belharbi2023colocam,
   title={CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos},
-  author={Belharbi, S. and Murtaza, S. and Pedersoli, M. and Ben Ayed, I. and 
+  author={Belharbi, S. and Murtaza, S. and Pedersoli, M. and Ben Ayed, I. and
   McCaffrey, L. and Granger, E.},
   journal={CoRR},
   volume={abs/2303.09044},
@@ -15,22 +30,22 @@ ArXiv: [https://arxiv.org/abs/2303.09044](https://arxiv.org/abs/2303.09044)
 }
 ```
 
-### Issues:
+## Issues:
 Please create a github issue.
 
 ### Content:
-* [Method](#method)
+<!-- * [Method](#method) -->
 * [Results](#results)
 * [Requirements](#reqs)
 * [Datasets](#datasets)
 * [Run code](#run)
 
 
-#### <a name='method'> Method</a>:
-<img src="doc/method.png" alt="method" width="600">
+<!-- #### <a name='method'> Method</a>:
+<img src="doc/method.png" alt="method" width="600"> -->
 
 #### <a name='results'> Results</a>:
-More demo: 
+More demo:
 - [Google drive](https://drive.google.com/drive/folders/14KysyAoFfF-3_ruSwzObBz3AS0G6xG93?usp=share_link)
 - [Github](./more-demo.md)
 
@@ -130,17 +145,17 @@ See full requirements at [./dependencies/requirements.txt](./dependencies/requir
     * Install [Swig](http://www.swig.org/index.php)
     * CRF
 ```shell
-cdir=$(pwd)
-cd dlib/crf/crfwrapper/bilateralfilter
-swig -python -c++ bilateralfilter.i
-python setup.py install
-cd $cdir
-cd dlib/crf/crfwrapper/colorbilateralfilter
-swig -python -c++ colorbilateralfilter.i
-python setup.py install
+  cdir=$(pwd)
+  cd dlib/crf/crfwrapper/bilateralfilter
+  swig -python -c++ bilateralfilter.i
+  python setup.py install
+  cd $cdir
+  cd dlib/crf/crfwrapper/colorbilateralfilter
+  swig -python -c++ colorbilateralfilter.i
+  python setup.py install
 ```
 
-#### <a name="datasets"> Download datasets </a>:
+## <a name="datasets"> Download datasets </a>:
 You can use these scripts to download the datasets: [cmds](./cmds). Use the
 script [_video_ds_ytov2_2.py](./dlib/datasets/_video_ds_ytov2_2.py) to
 reformat YTOv2.2.
@@ -148,127 +163,128 @@ reformat YTOv2.2.
 Once you download the datasets, you need to adjust the paths in
 [get_root_wsol_dataset()](dlib/configure/config.py).
 
-#### <a name="run"> Run code </a>:
+## <a name="run"> Run code </a>:
 Examples on how to run the code.
 
 1. WSOL baselines: LayerCAM over YouTube-Objects-v1.0 using ResNet50:
 ```shell
-cudaid=0
-export CUDA_VISIBLE_DEVICES=$cudaid
+  cudaid=0
+  export CUDA_VISIBLE_DEVICES=$cudaid
 
-getfreeport() {
-freeport=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') 
-}
-export OMP_NUM_THREADS=50
-export NCCL_BLOCKING_WAIT=1 
-getfreeport
-torchrun --nnodes=1 --node_rank=0 --nproc_per_node=1 --master_port=$freeport main.py --local_world_size=1 \
-       --task STD_CL \
-       --encoder_name resnet50 \
-       --arch STDClassifier \
-       --opt__name_optimizer sgd \
-       --dist_backend gloo \
-       --batch_size 32 \
-       --max_epochs 100 \
-       --checkpoint_save 100 \
-       --keep_last_n_checkpoints 10 \
-       --freeze_cl False \
-       --freeze_encoder False \
-       --support_background True \
-       --method LayerCAM \
-       --spatial_pooling WGAP \
-       --dataset YouTube-Objects-v1.0 \
-       --box_v2_metric False \
-       --cudaid $cudaid \
-       --debug_subfolder DEBUG \
-       --amp True \
-       --plot_tr_cam_progress False \
-       --opt__lr 0.001 \
-       --opt__step_size 15 \
-       --opt__gamma 0.9 \
-       --opt__weight_decay 0.0001 \
-       --sample_fr_limit 0.6 \
-       --std_label_smooth False \
-       --exp_id 03_14_2023_19_49_04_857184__2897019
+  getfreeport() {
+  freeport=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
+  }
+  export OMP_NUM_THREADS=50
+  export NCCL_BLOCKING_WAIT=1
+  getfreeport
+  torchrun --nnodes=1 --node_rank=0 --nproc_per_node=1 --master_port=$freeport main.py --local_world_size=1 \
+         --task STD_CL \
+         --encoder_name resnet50 \
+         --arch STDClassifier \
+         --opt__name_optimizer sgd \
+         --dist_backend gloo \
+         --batch_size 32 \
+         --max_epochs 100 \
+         --checkpoint_save 100 \
+         --keep_last_n_checkpoints 10 \
+         --freeze_cl False \
+         --freeze_encoder False \
+         --support_background True \
+         --method LayerCAM \
+         --spatial_pooling WGAP \
+         --dataset YouTube-Objects-v1.0 \
+         --box_v2_metric False \
+         --cudaid $cudaid \
+         --debug_subfolder DEBUG \
+         --amp True \
+         --plot_tr_cam_progress False \
+         --opt__lr 0.001 \
+         --opt__step_size 15 \
+         --opt__gamma 0.9 \
+         --opt__weight_decay 0.0001 \
+         --sample_fr_limit 0.6 \
+         --std_label_smooth False \
+         --exp_id 03_14_2023_19_49_04_857184__2897019
 ```
-Train until convergence, then store the cams of trainset to be used later.
-From the experiment folder, copy both folders 'YouTube-Objects-v1.
-0-resnet50-LayerCAM-WGAP-cp_best_localization-boxv2_False'
-and 'YouTube-Objects-v1.0-resnet50-LayerCAM-WGAP-cp_best_classification
--boxv2_False' to the folder 'pretrained'. They contain best weights which
-will be loaded by CoLo-CAM model.
+
+  Train until convergence, then store the cams of trainset to be used later.
+  From the experiment folder, copy both folders `YouTube-Objects-v1.
+  0-resnet50-LayerCAM-WGAP-cp_best_localization-boxv2_False`
+  and `YouTube-Objects-v1.0-resnet50-LayerCAM-WGAP-cp_best_classification
+  -boxv2_False` to the folder `pretrained`. They contain best weights which
+  will be loaded by CoLo-CAM model.
 
 2. CoLo-CAM: Run:
 ```shell
-cudaid=0
-export CUDA_VISIBLE_DEVICES=$cudaid
+  cudaid=0
+  export CUDA_VISIBLE_DEVICES=$cudaid
 
-getfreeport() {
-freeport=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') 
-}
-export OMP_NUM_THREADS=50
-export NCCL_BLOCKING_WAIT=1 
-getfreeport
-torchrun --nnodes=1 --node_rank=0 --nproc_per_node=1 --master_port=$freeport main.py --local_world_size=1 \
-       --task CoLo-CAM \
-       --encoder_name resnet50 \
-       --arch UnetCoLoCAM \
-       --opt__name_optimizer sgd \
-       --dist_backend gloo \
-       --batch_size 32 \
-       --max_epochs 10 \
-       --checkpoint_save 100 \
-       --keep_last_n_checkpoints 10 \
-       --freeze_cl True \
-       --support_background True \
-       --method LayerCAM \
-       --spatial_pooling WGAP \
-       --dataset YouTube-Objects-v1.0 \
-       --box_v2_metric False \
-       --cudaid $cudaid \
-       --debug_subfolder DEBUG \
-       --amp True \
-       --plot_tr_cam_progress False \
-       --opt__lr 0.01 \
-       --opt__step_size 5 \
-       --opt__gamma 0.9 \
-       --opt__weight_decay 0.0001 \
-       --sample_fr_limit 0.6 \
-       --elb_init_t 1.0 \
-       --elb_max_t 10.0 \
-       --elb_mulcoef 1.01 \
-       --sample_n_from_seq 2 \
-       --min_tr_batch_sz -1 \
-       --drop_small_tr_batch False \
-       --sample_n_from_seq_style before \
-       --sample_n_from_seq_dist uniform \
-       --sl_clc True \
-       --sl_clc_knn_t 0.0 \
-       --sl_clc_seed_epoch_switch_uniform -1 \
-       --sl_clc_epoch_switch_to_sl -1 \
-       --sl_clc_min_t 0.0 \
-       --sl_clc_lambda 1.0 \
-       --sl_clc_min 1000 \
-       --sl_clc_max 1000 \
-       --sl_clc_ksz 3 \
-       --sl_clc_max_p 0.7 \
-       --sl_clc_min_p 0.1 \
-       --sl_clc_seed_tech seed_weighted \
-       --sl_clc_use_roi True \
-       --sl_clc_roi_method largest \
-       --sl_clc_roi_min_size 0.05 \
-       --crf_clc True \
-       --crf_clc_lambda 2e-09 \
-       --crf_clc_sigma_rgb 15.0 \
-       --crf_clc_sigma_xy 100.0 \
-       --rgb_jcrf_clc True \
-       --rgb_jcrf_clc_lambda 9.0 \
-       --rgb_jcrf_clc_lambda_style adaptive \
-       --rgb_jcrf_clc_sigma_rgb 15.0 \
-       --rgb_jcrf_clc_input_data image \
-       --rgb_jcrf_clc_input_re_dim -1 \
-       --rgb_jcrf_clc_start_ep 0 \
-       --max_sizepos_clc True \
-       --max_sizepos_clc_lambda 0.01 \
-       --exp_id 03_14_2023_19_16_58_282581__5931773
+  getfreeport() {
+  freeport=$(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
+  }
+  export OMP_NUM_THREADS=50
+  export NCCL_BLOCKING_WAIT=1
+  getfreeport
+  torchrun --nnodes=1 --node_rank=0 --nproc_per_node=1 --master_port=$freeport main.py --local_world_size=1 \
+         --task CoLo-CAM \
+         --encoder_name resnet50 \
+         --arch UnetCoLoCAM \
+         --opt__name_optimizer sgd \
+         --dist_backend gloo \
+         --batch_size 32 \
+         --max_epochs 10 \
+         --checkpoint_save 100 \
+         --keep_last_n_checkpoints 10 \
+         --freeze_cl True \
+         --support_background True \
+         --method LayerCAM \
+         --spatial_pooling WGAP \
+         --dataset YouTube-Objects-v1.0 \
+         --box_v2_metric False \
+         --cudaid $cudaid \
+         --debug_subfolder DEBUG \
+         --amp True \
+         --plot_tr_cam_progress False \
+         --opt__lr 0.01 \
+         --opt__step_size 5 \
+         --opt__gamma 0.9 \
+         --opt__weight_decay 0.0001 \
+         --sample_fr_limit 0.6 \
+         --elb_init_t 1.0 \
+         --elb_max_t 10.0 \
+         --elb_mulcoef 1.01 \
+         --sample_n_from_seq 2 \
+         --min_tr_batch_sz -1 \
+         --drop_small_tr_batch False \
+         --sample_n_from_seq_style before \
+         --sample_n_from_seq_dist uniform \
+         --sl_clc True \
+         --sl_clc_knn_t 0.0 \
+         --sl_clc_seed_epoch_switch_uniform -1 \
+         --sl_clc_epoch_switch_to_sl -1 \
+         --sl_clc_min_t 0.0 \
+         --sl_clc_lambda 1.0 \
+         --sl_clc_min 1000 \
+         --sl_clc_max 1000 \
+         --sl_clc_ksz 3 \
+         --sl_clc_max_p 0.7 \
+         --sl_clc_min_p 0.1 \
+         --sl_clc_seed_tech seed_weighted \
+         --sl_clc_use_roi True \
+         --sl_clc_roi_method largest \
+         --sl_clc_roi_min_size 0.05 \
+         --crf_clc True \
+         --crf_clc_lambda 2e-09 \
+         --crf_clc_sigma_rgb 15.0 \
+         --crf_clc_sigma_xy 100.0 \
+         --rgb_jcrf_clc True \
+         --rgb_jcrf_clc_lambda 9.0 \
+         --rgb_jcrf_clc_lambda_style adaptive \
+         --rgb_jcrf_clc_sigma_rgb 15.0 \
+         --rgb_jcrf_clc_input_data image \
+         --rgb_jcrf_clc_input_re_dim -1 \
+         --rgb_jcrf_clc_start_ep 0 \
+         --max_sizepos_clc True \
+         --max_sizepos_clc_lambda 0.01 \
+         --exp_id 03_14_2023_19_16_58_282581__5931773
 ```
