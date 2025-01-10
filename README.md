@@ -26,8 +26,8 @@ Extensive experiments on two challenging YouTube-Objects datasets of unconstrain
   McCaffrey, L. and Granger, E.},
   journal={Pattern Recognition},
   volume={in prepapration},
-  pages= {xxx-xxx},
-  issue= {x}
+  pages={xxx-xxx},
+  issue={x},
   year={2025}
 }
 ```
