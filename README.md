@@ -1,4 +1,4 @@
-# [CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos](https://arxiv.org/pdf/2303.09044.pdf)
+# [CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos (Pattern Recognition 2025)](https://arxiv.org/pdf/2303.09044.pdf)
 
 by **Soufiane Belharbi<sup>1</sup>, Shakeeb Murtaza<sup>1</sup>, Marco Pedersoli<sup>1</sup>, Ismail Ben Ayed<sup>1</sup>, Luke McCaffrey<sup>2</sup>, Eric Granger<sup>1</sup>**
 
