@@ -25,9 +25,8 @@ Extensive experiments on two challenging YouTube-Objects datasets of unconstrain
   author={Belharbi, S. and Murtaza, S. and Pedersoli, M. and Ben Ayed, I. and
   McCaffrey, L. and Granger, E.},
   journal={Pattern Recognition},
-  volume={in prepapration},
+  volume={162},
   pages={111358},
-  issue={x},
   year={2025}
 }
 ```
