@@ -2,16 +2,24 @@
 
 by **Soufiane Belharbi<sup>1</sup>, Shakeeb Murtaza<sup>1</sup>, Marco Pedersoli<sup>1</sup>, Ismail Ben Ayed<sup>1</sup>, Luke McCaffrey<sup>2</sup>, Eric Granger<sup>1</sup>**
 
-<sup>1</sup> LIVIA, Dept. of Systems Engineering, ÉTS, Montreal, Canada
+<sup>1</sup> LIVIA, ILLS, Dept. of Systems Engineering, ÉTS, Montreal, Canada
 <br/>
 <sup>2</sup> Goodman Cancer Research Centre, Dept. of Oncology, McGill University, Montreal, Canada
+
+[![arXiv](https://img.shields.io/badge/arXiv-2406.09168-b31b1b.svg?logo=arxiv&logoColor=B31B1B)](https://arxiv.org/pdf/2303.09044)
+[![Page](https://img.shields.io/badge/Webpage-orange)](https://sbelharbi.github.io/colo-cam)
+[![DOI](https://img.shields.io/badge/DOI-10.1016/j.patcog.2025.111358-lightgreen?logo=doi&logoColor=FAB70C)](https://doi.org/10.1016/j.patcog.2025.111358)
+[![Free Access](https://img.shields.io/badge/Temporary%20Journal%20Free%20Access:%20March--14--2025-blue?logo=openaccess)](https://authors.elsevier.com/a/1kUV-77nKs8lu)
+
+
 
 <p align="center"><img src="doc/promo.png" alt="outline" width="50%"></p>
 
 
 ## Abstract
+
 Leveraging spatiotemporal information in videos is critical for weakly supervised video object localization (WSVOL) tasks. However, state-of-the-art methods only rely on visual and motion cues, while discarding discriminative information, making them susceptible to inaccurate localizations. Recently, discriminative models have been explored for WSVOL tasks using a temporal class activation mapping (CAM) method. Although their results are promising, objects are assumed to have limited movement from frame to frame, leading to degradation in performance for relatively long-term dependencies.
-This paper proposes a novel CAM method for WSVOL that exploits spatiotemporal information in activation maps during training without constraining an object's position. Its training relies on *Co*-*Lo*calization, hence, the name CoLo-CAM.
+This paper proposes a novel CAM method for WSVOL that exploits spatiotemporal information in activation maps during training without constraining an object's position. Its training relies on <i>Co</i>-<i>Lo</i>calization, hence, the name *CoLo-CAM*.
 Given a sequence of frames, localization is jointly learned based on color cues extracted across the corresponding maps, by assuming that an object has similar color in consecutive frames. CAM activations are constrained to respond similarly over pixels with similar colors, achieving co-localization. This improves localization performance because the joint learning creates direct communication among pixels across all image locations and over all frames, allowing for transfer, aggregation, and correction of localizations. Co-localization is integrated into training by minimizing the color term of a conditional random field (CRF) loss over a sequence of frames/CAMs.
 Extensive experiments on two challenging YouTube-Objects datasets of unconstrained videos show the merits of our CoLo-CAM method, and its robustness to long-term dependencies, leading to new state-of-the-art performance for WSVOL task.
 
