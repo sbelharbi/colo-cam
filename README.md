@@ -29,7 +29,7 @@ Extensive experiments on two challenging YouTube-Objects datasets of unconstrain
 ## Citation:
 ```
 @article{belharbi2025colocam,
-  title={CoLo-CAM: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos},
+  title={{CoLo-CAM}: Class Activation Mapping for Object Co-Localization in Weakly-Labeled Unconstrained Videos},
   author={Belharbi, S. and Murtaza, S. and Pedersoli, M. and Ben Ayed, I. and
   McCaffrey, L. and Granger, E.},
   journal={Pattern Recognition},
